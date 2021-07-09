@@ -13,8 +13,8 @@
     <div class="wrapper fadeInDown">
         <div id="formContent">
           <!-- Tabs Titles -->
-          <a href=""><h2 class="active"> Sign In </h2></a>
-          <a href="signup/"><h2 class="inactive underlineHover">Sign Up </h2></a>
+          <a href="/"><h2 class="inactive underlineHover"> Sign In </h2></a>
+          <h2 class="active">Sign Up </h2>
       
           <!-- Icon -->
           <div class="fadeIn first">
@@ -23,12 +23,10 @@
           </div>
       
           <!-- Login Form -->
-          <form action="{% url 'main:index' %}" method="POST">
+          <form action="{% url 'main:signup' %}" method="post">
             {% csrf_token %}
-            <input type="text" id="login" class="fadeIn second" name="username" placeholder="username">
-            <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
-            <br>
-            <input type="submit" class="fadeIn fourth" value="Log In">
+            {{form.as_p}}
+            <input type="submit" value="Sign up">
           </form>
       
           <!-- Remind Passowrd -->
