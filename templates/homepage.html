@@ -5,8 +5,8 @@
 <div class = "container">
     <div class="jumbotron" style="margin-top:50px">
         <h1 class="display-3">Trade Master</h1>
-        <p class="lead"> <b>Ai powered Stock predictions</b> </p>
-        <h4>How To Use: </h2>
+        <p><b>Ai powered Stock predictions</b> </p>
+        <h5>How To Use: </h5>
         <ul>
             <li>Provide the Ticker symbol - The ticker symbols as represented by NSE. </li>
             <li>Our backend will pull the lates data from NSE. </li>
@@ -14,11 +14,25 @@
             <li>After crunching the data AI provides the call for BUY or SELL for tommorow.</li>
         </ul>
         <hr class="my-2">
-        <p>This is a stock predictor webapp and this by no means should be replaced by a financial advisor</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-        </p>
-        <a class="btn btn-primary btn-lg" href="{% url 'main:logout_custom'%}">Logout</a>
+        <p>This stock predictor webapp and this by no means should be replaced by a financial advisor.</p>
+        <form action="{% url 'main:predict'%}" method="post">
+            {% csrf_token %}
+            <input type="text" name='ticker' placeholder="Provide the Ticker Symbol">
+            <button type="submit" class="btn btn-primary">Tell Position!</button>
+        </form>
+        <br>
+        {% if candlestick %}
+            <h6>Showing results for:- <b> <h5>{{ticker}}</h5> </b></h6>
+            {{candlestick|safe}}
+            <br>
+            {% if buy %}
+            <h4>Prediction for tommorow - <button type="button" class="btn btn-success">Buy</button> </h4>
+            {% else %}
+            <h4>Prediction for tommorow - <button type="button" class="btn btn-danger">Sell</button> </h4>
+            {% endif %}
+        {% endif %}
+        <br>
+        <a class="btn btn-primary" href="{% url 'main:logout_custom'%}">Logout</a>
     </div>
 </div>
 {% else %}

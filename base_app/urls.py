@@ -8,4 +8,5 @@ urlpatterns = [
     path('signup/',views.signup,name='signup'),
     path('home/',views.homepage,name='home'),
     path('logout/',views.logout_view,name='logout_custom'),
+    path('predict/',views.predict,name='predict'),
 ]

@@ -5,6 +5,14 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate
 
+from nsepy import get_history
+from datetime import date
+import plotly.graph_objects as go
+from plotly.offline import plot
+
+# data = get_history(symbol="SBIN", start=date(2021,3,1), end=date.today())
+# print(data.head(6))
+
 # Create your views here.
 def index(request):
     '''This is the sign-in view'''
@@ -40,3 +48,33 @@ def logout_view(request):
 
 def homepage(request):
     return render(request,'homepage.html')
+
+def predict(request):
+    if request.method == 'POST':
+        ticker = request.POST.get('ticker')
+        ticker = get_history(symbol=ticker, start=date(2021,3,1), end=date.today()) #pd df
+        print(ticker.head(6))
+
+        def candlestick():
+            figure = go.Figure(
+                data = [
+                        go.Candlestick(
+                        x = ticker.index,
+                        high = ticker['High'],
+                        low = ticker['Low'],
+                        open = ticker['Open'],
+                        close = ticker['Close'],
+                        )
+                    ]
+            )
+            candlestick_div = plot(figure, output_type='div')
+            return candlestick_div
+
+        last_candle = ticker.iloc[-1]
+        buy = 0
+        if(last_candle['Close']>last_candle['Open']):
+            buy = 1
+
+        
+        return render(request,'homepage.html',{'candlestick':candlestick(),'ticker':request.POST.get('ticker'),'buy':buy})
+        
